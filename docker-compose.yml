@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Dịch vụ Node.js API
+  api:
+    build: .
+    container_name: product-api-app
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      # Khi chạy trong Docker Compose, hostname của DB chính là tên service 'mongodb'
+      - MONGO_URI=mongodb://mongodb:27017/product_db
+    depends_on:
+      - mongodb
+    restart: always
+
+  # Dịch vụ MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: nammongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
